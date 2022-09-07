@@ -291,3 +291,38 @@ for plot in ["hits position"]:
       rows.append(row)
 
       CTPPSTrackingPixelLayout(dqmitems, plot+":" +sector+" "+station+" fr_hr", *rows)
+
+####################################################################################################
+# Totem T2 layouts
+####################################################################################################
+
+t2_sectors = [ "sector 45", "sector 56" ]
+
+def TotemT2Layout(i, p, *rows): i["TotemT2/Layouts/" + p] = DQMItem(layout=rows)
+
+# layouts with no overlays
+T2Plots = [ 
+  "active planes",
+  "leading edge (le and te)", 
+  "time over threshold", 
+  "number of active planes"]
+T2DrawOpt = [ 
+  {'xmax':"10"},  
+  {'xmax':"25"}, 
+  {'xmin':"0", 'xmax':"100"}, 
+  {'withref':"no"}]
+T2Description = [  
+  "COPIED It should be with peaks at 0 and 4", 
+  "COPIED It should be peaked around 5 ns", 
+  "COPIED It should be a broad distribution peaked around 12 ns",
+  "COPIED It should be full"]
+
+for i in range(len(T2Plots)):
+  rows = list()
+  for sector in t2_sectors:
+    row = list()
+    path_str = "TotemT2/"+sector+"/"+T2Plots[i]
+    row.append( { "path" : path_str, 'draw':T2DrawOpt[i], 'description':T2Description[i] } )
+    rows.append(row)
+
+  TotemT2Layout(dqmitems, T2Plots[i], *rows)
